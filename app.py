@@ -269,7 +269,8 @@ def product_label_pdf(product_id):
     import tempfile
     tmpdir = tempfile.gettempdir()
     png_path = os.path.join(tmpdir, f"{code}.png")
-        pdf_path = os.path.join(tmpdir, f"{code}.pdf")
+    pdf_path = os.path.join(tmpdir, f"{code}.pdf")
+
     generate_code128_png(code, png_path)
     path = build_label_pdf(code, p.title, p.price or 0.0, png_path, pdf_path)
     return send_file(path, as_attachment=True)
