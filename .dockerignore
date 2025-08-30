@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite
+*.db
+.env
+.venv/
+.git/
+*.log
+dist/
+build/
+node_modules/
+*.pdf
+barcodes/
+labels/
