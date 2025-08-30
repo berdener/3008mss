@@ -266,13 +266,25 @@ def sync_shopify_products():
 def product_label_pdf(product_id):
     p = Product.query.get_or_404(product_id)
     code = p.barcode or generate_internal_barcode()
-    import tempfile
+
     tmpdir = tempfile.gettempdir()
     png_path = os.path.join(tmpdir, f"{code}.png")
     pdf_path = os.path.join(tmpdir, f"{code}.pdf")
 
     generate_code128_png(code, png_path)
     path = build_label_pdf(code, p.title, p.price or 0.0, png_path, pdf_path)
+    return send_file(path, as_attachment=True)
+
+
+@app.route("/label/by-code/<string:code>")
+def label_by_code(code):
+    tmpdir = tempfile.gettempdir()
+    png_path = os.path.join(tmpdir, f"{code}.png")
+    pdf_path = os.path.join(tmpdir, f"{code}.pdf")
+
+    generate_code128_png(code, png_path)
+    # başlık/fiyat bilgisi elinizde yoksa basit hal:
+    path = build_label_pdf(code, code, 0.0, png_path, pdf_path)
     return send_file(path, as_attachment=True)
 
 @app.route("/label_by_code/<code>")
